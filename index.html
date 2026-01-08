@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu-Optima | Seich-OS Master v5</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            /* Professional Palette */
+            --primary: #0f172a;
+            /* Slate 900 */
+            --primary-light: #334155;
+            /* Slate 700 */
+            --accent: #0f766e;
+            /* Teal 700 */
+            --accent-soft: #ccfbf1;
+            /* Teal 100 */
+            --gold: #b45309;
+            /* Amber 700 */
+            --danger: #ef4444;
+            /* Red 500 */
+            --danger-bg: #fef2f2;
+            /* Red 50 */
+            --success: #22c55e;
+            /* Green 500 */
+            --bg-body: #f8fafc;
+            /* Slate 50 */
+            --bg-card: #ffffff;
+            --border: #cbd5e1;
+            /* Slate 300 */
+            --text-main: #1e293b;
+            /* Slate 800 */
+            --text-muted: #64748b;
+            /* Slate 500 */
+
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            --font-main: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --container-width: 1024px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- UTILITY CLASSES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mt-8 {
+            margin-top: 2rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .border-b {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .bg-white {
+            background: white;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #115e59;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-body);
+        }
+
+        /* --- UI COMPONENTS --- */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.25rem;
+        }
+
+        .badge-nep {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        /* Green */
+        .badge-tok {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+        }
+
+        /* Blue */
+        .badge-voc {
+            background: #f3e8ff;
+            color: #6b21a8;
+            border: 1px solid #d8b4fe;
+        }
+
+        /* Purple */
+        .badge-stem {
+            background: #ffedd5;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        /* Orange */
+        .badge-cit {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* Red */
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-float);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        /* --- HERO --- */
+        header.hero {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: white;
+            padding: 6rem 0 8rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* --- WIZARD FORM --- */
+        .app-container {
+            margin-top: -5rem;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 4rem;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #e2e8f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #14b8a6);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .card-body {
+            padding: 3rem;
+        }
+
+        .step-header h2 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+
+        .selection-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .selection-card:hover {
+            border-color: var(--accent);
+            background: #f0fdfa;
+        }
+
+        .selection-card.selected {
+            border-color: var(--accent);
+            background: #e6fffa;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .selection-card h4 {
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+
+        /* --- REPORT --- */
+        .report-section {
+            background: #525252;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .report-paper {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 2rem auto;
+            padding: 15mm;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            page-break-after: always;
+        }
+
+        .rp-header {
+            border-bottom: 3px double var(--primary);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .rp-logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Analysis Box */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Activity List with Guardrails */
+        .act-list {
+            margin-top: 1rem;
+        }
+
+        .act-item {
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: #fff;
+            border-top: 1px solid #eaeaea;
+            border-right: 1px solid #eaeaea;
+            border-bottom: 1px solid #eaeaea;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .guard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px dashed var(--border);
+            padding-top: 1rem;
+        }
+
+        .guard-box {
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .guard-bad {
+            background: var(--danger-bg);
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .guard-good {
+            background: #f0fdfa;
+            border: 1px solid #ccfbf1;
+            color: #047857;
+        }
+
+        /* Checklist */
+        .chk-list {
+            list-style: none;
+        }
+
+        .chk-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .chk-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .cite-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+
+        /* --- PRINT --- */
+        @media print {
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                margin: 0;
+                padding: 0;
+            }
+
+            .no-print,
+            header,
+            .app-container {
+                display: none !important;
+            }
+
+            #report-viewer {
+                display: block !important;
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .report-section {
+                padding: 0;
+                background: white;
+            }
+
+            .report-paper {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+                padding: 10mm;
+                overflow: visible;
+                page-break-after: always;
+                width: 100%;
+                height: auto;
+                min-height: 0;
+            }
+
+            .btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <header class="hero no-print">
+        <div class="container">
+            <h1>Edu-Optima Seich-OS v5</h1>
+            <p>The "Anti-Conservative" School OS.<br>Guardrails, Checklists & 50+ Modern Modules.</p>
+            <button class="btn btn-secondary"
+                onclick="document.getElementById('wizard-card').scrollIntoView({behavior:'smooth'})">Start
+                Optimization</button>
+        </div>
+    </header>
+
+    <!-- APP CONTAINER -->
+    <div id="app" class="container app-container">
+
+        <!-- WIZARD -->
+        <div id="wizard-card" class="card no-print">
+            <div class="progress-track">
+                <div id="progress-bar" class="progress-fill" style="width: 20%"></div>
+            </div>
+
+            <form id="auditForm" onsubmit="return false;">
+                <div class="card-body">
+
+                    <!-- STEP 1: RESOURCES -->
+                    <div id="step1" class="step">
+                        <div class="step-header">
+                            <span class="badge badge-nep">Phase 1</span>
+                            <h2>Resource Constraints</h2>
+                        </div>
+                        <div class="form-grid mt-4">
+                            <div><label class="mb-2 block font-bold">Annual Innovation Budget (₹)</label><input
+                                    type="number" id="inp-budget" class="form-control" placeholder="100000"></div>
+                            <div><label class="mb-2 block font-bold">Available Teacher Hours (Weekly)</label><input
+                                    type="number" id="inp-hours" class="form-control"
+                                    placeholder="Total free slots (e.g., 20)"></div>
+
+                            <div>
+                                <label class="mb-2 block font-bold">Space Constraints</label>
+                                <select id="inp-space" class="form-control">
+                                    <option value="limited">Limited (Classroom Only)</option>
+                                    <option value="standard">Standard (Field + Hall)</option>
+                                    <option value="ample">Ample (Gardens, Labs, Terrace)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: PAINS & GOALS -->
+                    <div id="step2" class="step hidden">
+                        <div class="step-header">
+                            <span class="badge badge-tok">Phase 2</span>
+                            <h2>Strategic Focus</h2>
+                        </div>
+                        <h4 class="mt-4 mb-2">School's Primary Goal (Weight x2)</h4>
+                        <div class="form-grid mb-6">
+                            <label class="selection-card" onclick="toggleSelection(this, 's2')">
+                                <input type="radio" name="goal" value="vocational" hidden>
+                                <h4>🛠️ Skills & Career</h4>
+                                <p>Job-readiness, NEP voc-ed.</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleSelection(this, 's2')">
+                                <input type="radio" name="goal" value="stem" hidden>
+                                <h4>🧪 STEM & Competitive</h4>
+                                <p>Olympiads, Science, Data.</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleSelection(this, 's2')">
+                                <input type="radio" name="goal" value="citizenship" hidden>
+                                <h4>🗳️ Citizenship</h4>
+                                <p>Democracy, Debate, Ethics.</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleSelection(this, 's2')">
+                                <input type="radio" name="goal" value="holistic" hidden checked>
+                                <h4>🤝 Tokkatsu (Holistic)</h4>
+                                <p>Discipline, Empathy, Values.</p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: INFRA DETAILS -->
+                    <div id="step3" class="step hidden">
+                        <div class="step-header">
+                            <span class="badge badge-stem">Phase 3</span>
+                            <h2>Equipment Audit</h2>
+                        </div>
+                        <div class="form-grid mt-4">
+                            <label class="selection-card" onclick="toggleCb(this)">
+                                <input type="checkbox" id="inf-comp" hidden>
+                                <h4>🖥️ Computer Lab</h4>
+                                <p>Min 10 PCs</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleCb(this)">
+                                <input type="checkbox" id="inf-pa" hidden>
+                                <h4>📢 PA System</h4>
+                                <p>Speakers in rooms</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleCb(this)">
+                                <input type="checkbox" id="inf-kit" hidden>
+                                <h4>🥘 Gas/Stove</h4>
+                                <p>For cooking/chem</p>
+                            </label>
+                            <label class="selection-card" onclick="toggleCb(this)">
+                                <input type="checkbox" id="inf-soil" hidden>
+                                <h4>🌱 Garden Soil</h4>
+                                <p>Or pots area</p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- NAVIGATION -->
+                    <div class="flex justify-between mt-8 pt-4 border-t border-border">
+                        <button class="btn btn-secondary" id="btn-back" onclick="nav(-1)">Back</button>
+                        <button class="btn btn-primary" id="btn-next" onclick="nav(1)">Next Step</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- REPORT VIEWER -->
+    <div id="report-viewer" class="hidden report-section">
+        <div class="container no-print"
+            style="margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center;">
+            <h2 class="font-bold text-white text-xl">Optimization Complete</h2>
+            <div class="flex gap-4">
+                <button class="btn btn-secondary" onclick="window.location.reload()">Reset</button>
+                <button class="btn btn-primary" onclick="window.print()">Download PDF</button>
+            </div>
+        </div>
+
+        <div id="report-content"></div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- DB: THE 50+ ITEM DATABASE WITH GUARDRAILS ---
+        const DB = [
+            // TOKKATSU (CORE)
+            {
+                id: 't1', name: 'Han Groups', cat: 'TOKKATSU', cost: 0, hours: 1, impact: 90, req: [],
+                desc: "Vertical peer mentor groups (Gr 6-8).",
+                bad: "Teachers assigning groups based on friendship.", good: "Random assignment to force mixing."
+            },
+            {
+                id: 't2', name: 'O-Soji Cleaning', cat: 'TOKKATSU', cost: 1000, hours: 2, impact: 85, req: [],
+                desc: "Daily 15min cleaning.",
+                bad: "Teacher standing with hands behind back supervising.", good: "Teacher holding a broom and cleaning too."
+            },
+            {
+                id: 't3', name: 'Nichoku Leader', cat: 'TOKKATSU', cost: 0, hours: 0, impact: 80, req: [],
+                desc: "Rotating day leader.",
+                bad: "Picking only 'good' students as leaders.", good: "Strict sequence so EVERY child leads."
+            },
+            {
+                id: 't4', name: 'Kyushoku Service', cat: 'TOKKATSU', cost: 3000, hours: 2, impact: 88, req: ['inf-kit'],
+                desc: "Serving lunch to peers.",
+                bad: "Maims/Staff doing the serving.", good: "Students serving with aprons/masks."
+            },
+            {
+                id: 't5', name: 'Kaeri-no-kai', cat: 'TOKKATSU', cost: 0, hours: 1, impact: 75, req: [],
+                desc: "End-of-day reflection meeting.",
+                bad: "Teacher scolding students.", good: "Students praising each other ('Good-job' notes)."
+            },
+
+            // CITIZENSHIP & FUTURE
+            {
+                id: 'c1', name: 'Student Council', cat: 'CITIZENSHIP', cost: 2000, hours: 4, impact: 95, req: [],
+                desc: "Democratic elections for leaders.",
+                bad: "Teachers appointing 'Head Boy/Girl'.", good: "Secret ballot voting boxes."
+            },
+            {
+                id: 'c2', name: 'Debate Club', cat: 'CITIZENSHIP', cost: 500, hours: 2, impact: 90, req: [],
+                desc: "Critical thinking on current affairs.",
+                bad: "Topics like 'Is homework good?'.", good: "Topics like 'AI Ethics' or 'Water Crisis'."
+            },
+            {
+                id: 'c3', name: 'Local History', cat: 'CITIZENSHIP', cost: 1000, hours: 3, impact: 85, req: [],
+                desc: "Documenting neighborhood stories.",
+                bad: "Copy-pasting from Wikipedia.", good: "Interviewing grandparents/shopkeepers."
+            },
+            {
+                id: 'c4', name: 'Panchayat Mock', cat: 'CITIZENSHIP', cost: 0, hours: 2, impact: 80, req: [],
+                desc: "Simulating local governance.",
+                bad: "Scripted play.", good: "Solving real school issue (e.g., tap water)."
+            },
+
+            // VOCATIONAL (NEP)
+            {
+                id: 'v1', name: 'Seikatsu (Sewing)', cat: 'VOCATIONAL', cost: 5000, hours: 2, impact: 85, req: [],
+                desc: "Button repair & basic sewing.",
+                bad: "Only for girls.", good: "All genders must stitch."
+            },
+            {
+                id: 'v2', name: 'Carpentry Basics', cat: 'VOCATIONAL', cost: 15000, hours: 3, impact: 88, req: ['standard'],
+                desc: "Repairing school furniture.",
+                bad: "Teacher using the hammer.", good: "Students fixing broken desks."
+            },
+            {
+                id: 'v3', name: 'Coding Bootcamp', cat: 'VOCATIONAL', cost: 0, hours: 4, impact: 95, req: ['inf-comp'],
+                desc: "HTML/Python logic basics.",
+                bad: "Memorizing syntax.", good: "Building a personal website."
+            },
+            {
+                id: 'v4', name: 'Gakkyu-en (Farm)', cat: 'VOCATIONAL', cost: 2000, hours: 2, impact: 82, req: ['inf-soil'],
+                desc: "Growing mid-day meal veg.",
+                bad: "Gardener doing the work.", good: "Students gettingmuddy hands."
+            },
+            {
+                id: 'v5', name: 'Financial Lit', cat: 'VOCATIONAL', cost: 500, hours: 1, impact: 90, req: [],
+                desc: "Mock Bank & Budgeting.",
+                bad: "Theory lecture on inflation.", good: "Running a 'School Currency' store."
+            },
+
+            // STEM & CAREER
+            {
+                id: 's1', name: 'Olympiad Club', cat: 'STEM', cost: 5000, hours: 4, impact: 92, req: [],
+                desc: "Adv math/science prep.",
+                bad: "Rote memorization.", good: "Problem solving challenges."
+            },
+            {
+                id: 's2', name: 'Science Fair', cat: 'STEM', cost: 10000, hours: 8, impact: 90, req: ['standard'],
+                desc: "Maker projects exhibition.",
+                bad: "Buying projects from market.", good: "Jugaad/Recycled materials only."
+            },
+            {
+                id: 's3', name: 'Data Detective', cat: 'STEM', cost: 0, hours: 2, impact: 85, req: ['inf-comp'],
+                desc: "Analyzing school data (attendance).",
+                bad: "Fake data.", good: "Using real Excel sheets of school power usage."
+            },
+            {
+                id: 'r1', name: 'Career 1-on-1', cat: 'CAREER', cost: 0, hours: 6, impact: 98, req: [],
+                desc: "Personal guidance Gr 10-12.",
+                bad: "Pushing Engineering/Medicine.", good: "Showing 50+ diverse career paths."
+            },
+            {
+                id: 'r2', name: 'Alumni Talks', cat: 'CAREER', cost: 500, hours: 1, impact: 80, req: [],
+                desc: "Inviting past students.",
+                bad: "Only successful rich alumni.", good: "Diverse alumni (Artists, Soldiers, NGOs)."
+            },
+
+            // CULTURAL & FUN
+            {
+                id: 'f1', name: 'Bunkasai (Fest)', cat: 'CULTURAL', cost: 20000, hours: 10, impact: 95, req: ['standard'],
+                desc: "Student-led cultural fest.",
+                bad: "Teachers organizing everything.", good: "Students managing budget and stalls."
+            },
+            {
+                id: 'f2', name: 'Hoso (Radio)', cat: 'CULTURAL', cost: 5000, hours: 2, impact: 75, req: ['inf-pa'],
+                desc: "Lunchtime radio show.",
+                bad: "Principal announcements only.", good: "Student DJ, Jokes, Music."
+            },
+            {
+                id: 'f3', name: 'Origami Math', cat: 'CULTURAL', cost: 500, hours: 1, impact: 60, req: [],
+                desc: "Geometry via folding.",
+                bad: "Just making cranes.", good: "Teaching angles and fractions."
+            }
+        ];
+
+        // --- STATE & NAV ---
+        let step = 1;
+
+        function toggleSelection(el, stepId) {
+            document.querySelectorAll(`[onclick*="${stepId}"]`).forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('input').checked = false;
+            });
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+        }
+
+        function toggleCb(el) {
+            const cb = el.querySelector('input');
+            cb.checked = !cb.checked;
+            el.classList.toggle('selected', cb.checked);
+        }
+
+        function nav(dir) {
+            const screens = ['step1', 'step2', 'step3'];
+            if (dir === 1 && step === 3) { optimize(); return; }
+            if (dir === -1 && step === 1) return;
+
+            document.getElementById(screens[step - 1]).classList.add('hidden');
+            step += dir;
+            document.getElementById(screens[step - 1]).classList.remove('hidden');
+
+            document.getElementById('progress-bar').style.width = `${(step / 3) * 100}%`;
+            document.getElementById('btn-next').textContent = step === 3 ? 'Run Optimizer' : 'Next Step';
+            document.getElementById('btn-back').style.visibility = step === 1 ? 'hidden' : 'visible';
+        }
+
+        // --- OPTIMIZATION ENGINE ---
+        function optimize() {
+            let budget = parseInt(document.getElementById('inp-budget').value) || 0;
+            let hours = parseInt(document.getElementById('inp-hours').value) || 0;
+            const space = document.getElementById('inp-space').value;
+            const goal = document.querySelector('input[name="goal"]:checked').value;
+
+            const infra = {
+                comp: document.getElementById('inf-comp').checked,
+                pa: document.getElementById('inf-pa').checked,
+                kit: document.getElementById('inf-kit').checked,
+                soil: document.getElementById('inf-soil').checked
+            };
+
+            // Filter & Weight
+            let candidates = DB.filter(item => {
+                if (item.req.includes('ample') && space !== 'ample') return false;
+                if (item.req.includes('standard') && (space === 'limited')) return false;
+                if (item.req.includes('inf-comp') && !infra.comp) return false;
+                if (item.req.includes('inf-pa') && !infra.pa) return false;
+                if (item.req.includes('inf-kit') && !infra.kit) return false;
+                if (item.req.includes('inf-soil') && !infra.soil) return false;
+                return true;
+            });
+
+            candidates.forEach(c => {
+                c.score = c.impact;
+                if (goal.toUpperCase() === c.cat) c.score *= 1.6; // Higher weight for goal
+                let textRes = (c.cost / 2000) + c.hours;
+                if (textRes === 0) textRes = 0.5;
+                c.ratio = c.score / textRes;
+            });
+
+            candidates.sort((a, b) => b.ratio - a.ratio);
+
+            const selected = [];
+            let usedBudget = 0;
+            let usedHours = 0;
+
+            // Diversity Guarantee
+            const cats = ['TOKKATSU', 'VOCATIONAL', 'CITIZENSHIP', 'STEM'];
+            cats.forEach(cat => {
+                const best = candidates.find(c => c.cat === cat && (usedBudget + c.cost <= budget) && (usedHours + c.hours <= hours));
+                if (best) {
+                    selected.push(best);
+                    usedBudget += best.cost;
+                    usedHours += best.hours;
+                    candidates = candidates.filter(x => x.id !== best.id);
+                }
+            });
+
+            // Fill
+            for (let c of candidates) {
+                if (usedBudget + c.cost <= budget && usedHours + c.hours <= hours) {
+                    selected.push(c);
+                    usedBudget += c.cost;
+                    usedHours += c.hours;
+                }
+            }
+
+            renderValues(selected, usedBudget, usedHours, budget, hours);
+            document.getElementById('wizard-card').classList.add('hidden');
+            document.getElementById('report-viewer').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function renderValues(items, uB, uH, tB, tH) {
+            const c = document.getElementById('report-content');
+
+            // PAGE 1: OVERVIEW & GUARDRAILS
+            let html = `
+                <div class="report-paper">
+                    <div class="rp-header">
+                        <div class="rp-logo">Seich-OS Optimization</div>
+                        <div class="text-right">
+                            <span class="badge badge-tok">v5.0 MASTER</span><br>
+                            <small>${new Date().toDateString()}</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-grid">
+                        <div class="stat-box"><div class="stat-val">${items.length}</div><div class="stat-lbl">Activities</div></div>
+                        <div class="stat-box"><div class="stat-val">₹${uB.toLocaleString()}</div><div class="stat-lbl">Est. Cost</div></div>
+                        <div class="stat-box"><div class="stat-val">${uH}h</div><div class="stat-lbl">Weekly Hours</div></div>
+                        <div class="stat-box"><div class="stat-val">${Math.floor((uB / tB) * 100)}%</div><div class="stat-lbl">Budget Util</div></div>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-primary border-b pb-2">Selected Optimal Mix (With Guardrails)</h3>
+                    <div class="act-list">
+                        ${items.map(i => `
+                            <div class="act-item">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-bold text-lg">${i.name}</h4>
+                                    <span class="badge ${getBadge(i.cat)}">${i.cat}</span>
+                                </div>
+                                <p class="text-sm text-text-muted mb-2">${i.desc}</p>
+                                
+                                <!-- GUARDRAILS BOX -->
+                                <div class="guard-grid">
+                                    <div class="guard-box guard-bad">
+                                        <strong>🚫 AVOID (Conservative Trap):</strong><br>
+                                        ${i.bad}
+                                    </div>
+                                    <div class="guard-box guard-good">
+                                        <strong>✅ SUCCESS METRIC:</strong><br>
+                                        ${i.good}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // PAGE 2: PRINCIPAL'S MONDAY CHECKLIST
+            html += `
+                <div class="report-paper">
+                    <div class="rp-header">
+                        <div class="rp-logo">The Monday Checklist</div>
+                        <div>For The Principal</div>
+                    </div>
+
+                    <p class="mb-6">Print this page every Monday. Walk around the school. If you see the "Red Flags", intervene immediately.</p>
+
+                    <h3 class="font-bold text-lg mb-4 text-primary bg-gray-100 p-2">Weekly Implementation Audit</h3>
+                    <ul class="chk-list">
+                        ${items.map(i => `
+                            <li>
+                                <span class="chk-box"></span>
+                                <div>
+                                    <strong>${i.name}:</strong> 
+                                    Are we doing it? 
+                                    <span class="text-sm text-danger"> (Check: Is ${i.bad.toLowerCase()})</span>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+
+                    <h3 class="font-bold text-lg mt-8 mb-4 text-primary bg-gray-100 p-2">SOP Compliance Scores</h3>
+                    <table class="domain-table">
+                        <tr><th>Activity</th><th>Outcome Target</th><th>Teacher Assigned</th></tr>
+                        ${items.map(i => `
+                        <tr>
+                            <td>${i.name}</td>
+                            <td>${i.good}</td>
+                            <td>_________________</td>
+                        </tr>
+                        `).join('')}
+                    </table>
+
+                    <div class="mt-8 border border-accent p-4 rounded bg-teal-50 text-center">
+                        <h4 class="font-bold text-accent">Principal's Signature</h4>
+                        <p class="text-sm mt-4">__________________________</p>
+                        <p class="text-xs text-text-muted">I certify that we are following the Spirit, not just the Rules.</p>
+                    </div>
+                </div>
+            `;
+
+            c.innerHTML = html;
+        }
+
+        function getBadge(cat) {
+            if (cat === 'TOKKATSU') return 'badge-tok';
+            if (cat === 'VOCATIONAL') return 'badge-voc';
+            if (cat === 'STEM') return 'badge-stem';
+            if (cat === 'CITIZENSHIP') return 'badge-cit';
+            return 'badge-nep';
+        }
+    </script>
+</body>
+
+</html>

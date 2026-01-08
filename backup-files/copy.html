@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu-Optima | Seich-OS Audit Tool</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            /* Professional Palette: Deep Navy & Teal */
+            --primary: #0f172a;
+            /* Slate 900 */
+            --primary-light: #334155;
+            /* Slate 700 */
+            --accent: #0d9488;
+            /* Teal 600 */
+            --accent-hover: #0f766e;
+            /* Teal 700 */
+            --danger: #dc2626;
+            /* Red 600 */
+            --success: #16a34a;
+            /* Green 600 */
+
+            --bg-body: #f1f5f9;
+            /* Slate 100 */
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            /* Slate 200 */
+            --text-main: #1e293b;
+            /* Slate 800 */
+            --text-muted: #64748b;
+            /* Slate 500 */
+
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --font-main: 'Inter', system-ui, sans-serif;
+            --container-width: 1000px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- UTILITY CLASSES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-8 {
+            margin-top: 2rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-body);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-light);
+            border: 1px solid var(--primary-light);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* --- HERO HEADER --- */
+        header.hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+            color: white;
+            padding: 5rem 0 6rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* --- WIZARD FORM CONTAINER --- */
+        .app-container {
+            margin-top: -4rem;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* Progress Bar */
+        .progress-track {
+            height: 6px;
+            background: var(--bg-body);
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Form Elements */
+        .step-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .step-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .checkbox-card {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-card:hover {
+            border-color: var(--accent);
+            background: #f0fdfa;
+        }
+
+        .checkbox-card input {
+            margin-right: 0.75rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--accent);
+        }
+
+        /* --- REPORT LAYOUT --- */
+        .report-toolbar {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-page {
+            max-width: 210mm;
+            min-height: 297mm;
+            margin: 2rem auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+        }
+
+        .rp-header-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .rp-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.05em;
+        }
+
+        .rp-meta {
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-val {
+            display: block;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .rec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .rec-table th {
+            text-align: left;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .rec-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .rec-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-pill {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .badge-tokkatsu {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-nep {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .callout {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* --- PRINT MEDIA --- */
+        @media print {
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            header,
+            .report-toolbar,
+            footer,
+            form,
+            .no-print {
+                display: none !important;
+            }
+
+            .app-container {
+                margin: 0;
+            }
+
+            .report-page {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                page-break-after: always;
+                padding: 0;
+            }
+
+            .card {
+                box-shadow: none;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="container">
+            <h1>Edu-Optima Audit</h1>
+            <p>Generate your school's NEP 2020 Compliance Roadmap using Japanese "Tokkatsu" methodology.</p>
+            <div class="hero-tags">
+                <span class="tag">NEP 2020 Aligned</span>
+                <span class="tag">PARAKH HPC Ready</span>
+                <span class="tag">Free for BPS Schools</span>
+            </div>
+            <button class="btn btn-primary" onclick="scrollToApp()">Start Free Assessment</button>
+        </div>
+    </header>
+
+    <!-- MAIN APP AREA -->
+    <div id="app" class="container app-container">
+
+        <!-- WIZARD FORM -->
+        <div id="wizard-section" class="card">
+            <div class="progress-track">
+                <div id="progress-bar" class="progress-fill" style="width: 25%;"></div>
+            </div>
+
+            <div class="card-body">
+                <form id="audit-form" onsubmit="return false;">
+
+                    <!-- STEP 1: DEMOGRAPHICS -->
+                    <div class="form-step" id="step-1">
+                        <div class="step-header">
+                            <h2>1. School Scope & Size</h2>
+                            <p class="text-muted">Basic demographics to calibrate density norms.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Total Student Count (Gr 1-10)</label>
+                                <input type="number" id="inp-students" class="form-control" placeholder="e.g. 450"
+                                    min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Teaching Faculty Count</label>
+                                <input type="number" id="inp-teachers" class="form-control" placeholder="e.g. 25"
+                                    min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Total Classrooms</label>
+                                <input type="number" id="inp-classrooms" class="form-control" placeholder="e.g. 12">
+                            </div>
+                            <div class="form-group">
+                                <label>Campus Type</label>
+                                <select id="inp-campus" class="form-control">
+                                    <option value="owned">Owned Premises</option>
+                                    <option value="rented">Rented Building</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: FINANCES -->
+                    <div class="form-step hidden" id="step-2">
+                        <div class="step-header">
+                            <h2>2. Financial Constraints</h2>
+                            <p class="text-muted">We use this to recommend solutions that fit your budget.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Annual Tuition Fee (Avg per Student)</label>
+                                <input type="number" id="inp-fee" class="form-control" placeholder="₹ e.g. 24000">
+                            </div>
+                            <div class="form-group">
+                                <label>Innovation/Upgrade Budget (CapEx)</label>
+                                <input type="number" id="inp-budget" class="form-control" placeholder="₹ e.g. 50000">
+                                <p class="text-sm text-muted mt-4">Funds available for new labs or programs this year.
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Maintenance & Cleaning Spend (Monthly)</label>
+                                <input type="number" id="inp-cleaning" class="form-control" placeholder="₹ e.g. 15000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: INFRASTRUCTURE -->
+                    <div class="form-step hidden" id="step-3">
+                        <div class="step-header">
+                            <h2>3. Infrastructure Audit</h2>
+                            <p class="text-muted">Check all facilities that are currently fully functional.</p>
+                        </div>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="chk-lab">
+                                <div><strong>Science / Math Lab</strong>
+                                    <div class="text-sm text-muted">Dedicated room with apparatus</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="chk-library">
+                                <div><strong>Library</strong>
+                                    <div class="text-sm text-muted">Stocked with >500 books</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="chk-comp">
+                                <div><strong>Computer Lab</strong>
+                                    <div class="text-sm text-muted">At least 10 working PCs</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="chk-smart">
+                                <div><strong>Smart Boards</strong>
+                                    <div class="text-sm text-muted">Projectors/TVs in classrooms</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: PAINS -->
+                    <div class="form-step hidden" id="step-4">
+                        <div class="step-header">
+                            <h2>4. Key Challenges</h2>
+                            <p class="text-muted">Top 2 priorities to focus the roadmap on.</p>
+                        </div>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="pain-admissions">
+                                <div><strong>Low Admissions</strong>
+                                    <div class="text-sm text-muted">Struggle to fill seats or compete</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="pain-hygiene">
+                                <div><strong>Hygiene & Maintenance Costs</strong>
+                                    <div class="text-sm text-muted">Campus cleanliness or high janitor costs</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="pain-discipline">
+                                <div><strong>Student Discipline</strong>
+                                    <div class="text-sm text-muted">Behavioral issues, bullying, noise</div>
+                                </div>
+                            </label>
+                            <label class="checkbox-card">
+                                <input type="checkbox" id="pain-nep">
+                                <div><strong>NEP/PARAKH Compliance</strong>
+                                    <div class="text-sm text-muted">Unsure about new report cards (HPC)</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- NAVIGATION BUTTONS -->
+                    <div class="flex justify-between mt-8">
+                        <button type="button" id="btn-back" class="btn btn-secondary hidden"
+                            onclick="navigateStep(-1)">Back</button>
+                        <div style="flex-grow:1"></div>
+                        <button type="button" id="btn-next" class="btn btn-primary" onclick="navigateStep(1)">Next
+                            Step</button>
+                        <button type="button" id="btn-submit" class="btn btn-primary hidden"
+                            onclick="generateReport()">Generate Roadmap</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- REPORT SECTION (HIDDEN INITIALLY) -->
+        <div id="report-section" class="hidden">
+            <div class="report-toolbar">
+                <div class="font-bold">Transformation Roadmap Ready</div>
+                <div class="flex gap-4">
+                    <button class="btn btn-outline" style="border-color:white; color:white;"
+                        onclick="window.location.reload()">Start Over</button>
+                    <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
+                </div>
+            </div>
+
+            <!-- Page 1 -->
+            <div id="report-content-1"></div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA STORE ---
+        const state = {
+            step: 1,
+            totalSteps: 4,
+            data: {}
+        };
+
+        // --- DOM REFS ---
+        const sections = {
+            wizard: document.getElementById('wizard-section'),
+            report: document.getElementById('report-section'),
+            progressBar: document.getElementById('progress-bar')
+        };
+        const buttons = {
+            back: document.getElementById('btn-back'),
+            next: document.getElementById('btn-next'),
+            submit: document.getElementById('btn-submit')
+        };
+
+        // --- NAVIGATION ---
+        function scrollToApp() {
+            document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function navigateStep(direction) {
+            // Validate before going forward
+            if (direction === 1) {
+                if (!validateCurrentStep()) return;
+            }
+
+            // Hide current
+            document.getElementById(`step-${state.step}`).classList.add('hidden');
+
+            // Change step
+            state.step += direction;
+
+            // Show new
+            document.getElementById(`step-${state.step}`).classList.remove('hidden');
+
+            updateUI();
+        }
+
+        function validateCurrentStep() {
+            if (state.step === 1) {
+                const s = document.getElementById('inp-students').value;
+                const t = document.getElementById('inp-teachers').value;
+                if (!s || !t) {
+                    alert("Please enter Student and Teacher counts.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateUI() {
+            // Update Progress Bar
+            const percent = (state.step / state.totalSteps) * 100;
+            sections.progressBar.style.width = `${percent}%`;
+
+            // Button Visibility
+            if (state.step === 1) {
+                buttons.back.classList.add('hidden');
+            } else {
+                buttons.back.classList.remove('hidden');
+            }
+
+            if (state.step === state.totalSteps) {
+                buttons.next.classList.add('hidden');
+                buttons.submit.classList.remove('hidden');
+            } else {
+                buttons.next.classList.remove('hidden');
+                buttons.submit.classList.add('hidden');
+            }
+        }
+
+        // --- CORE LOGIC ENGINE ---
+        function generateReport() {
+            // 1. Harvest Data
+            state.data = {
+                students: parseInt(document.getElementById('inp-students').value) || 0,
+                teachers: parseInt(document.getElementById('inp-teachers').value) || 0,
+                budget: parseInt(document.getElementById('inp-budget').value) || 0,
+                cleaning: parseInt(document.getElementById('inp-cleaning').value) || 0,
+                lab: document.getElementById('chk-lab').checked,
+                pains: {
+                    hygiene: document.getElementById('pain-hygiene').checked,
+                    discipline: document.getElementById('pain-discipline').checked,
+                    nep: document.getElementById('pain-nep').checked,
+                    admissions: document.getElementById('pain-admissions').checked
+                }
+            };
+
+            // 2. Compute Recommendations
+            const recs = performAnalysis(state.data);
+
+            // 3. Render HTML
+            renderReport(state.data, recs);
+
+            // 4. Switch Views
+            sections.wizard.classList.add('hidden');
+            sections.report.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function performAnalysis(data) {
+            const recommendations = [];
+
+            // Helper to add rec
+            const add = (title, cost, impact, desc, why) => {
+                recommendations.push({ title, cost, impact, desc, why });
+            };
+
+            // RULE 1: HAN GROUPS (Universal Recommendation)
+            // Needed for NEP Para 4.15 (Collaborative Learning)
+            add(
+                "Han Engine (Small Groups)",
+                "Low Cost",
+                "High Impact",
+                "Divide class into mixed-ability 'Han' groups of 4. Change monthly. Use for lunch, cleaning, and study.",
+                "Meets NEP requirement for 'Collaborative Learning'. Reduces teacher burden by peer-management."
+            );
+
+            // RULE 2: HYGIENE / LOW BUDGET -> SOJI
+            if (data.pains.hygiene || data.budget < 50000) {
+                const saving = data.cleaning * 0.2 * 12; // Est 20% saving annually
+                add(
+                    "Soji (O-Soji) Cleaning Time",
+                    "₹0 Cost",
+                    `Save ~₹${saving.toLocaleString()}/yr`,
+                    "15-minute daily cleaning slot. Students clean their own classrooms (desks, floor).",
+                    "Instills 'Dignity of Labor'. Reduces janitorial staff dependency. Improves campus hygiene instantly."
+                );
+            }
+
+            // RULE 3: ACADEMIC INFRA
+            if (!data.lab && data.budget < 20000) {
+                add(
+                    "Origami Math Lab (Monozukuri)",
+                    "₹2,000 Setup",
+                    "Concrete Learning",
+                    "Use paper folding to teach Geometry and Fractions. No expensive plastic models needed.",
+                    "Japanese 'Monozukuri' (craftsmanship) approach aligns with NEP emphasis on 'Experiential Learning'."
+                );
+            } else if (data.pains.admissions && data.budget > 100000) {
+                add(
+                    "IoT & Robotics Zone",
+                    "₹1.2 Lakh",
+                    "Brand Value",
+                    "Setup a basic tinkering station with Arduino kits.",
+                    "High visibility for admissions. Aligns with 21st Century Skills mandate."
+                );
+            }
+
+            // RULE 4: DISCIPLINE -> CHOKAI
+            if (data.pains.discipline || data.pains.nep) {
+                add(
+                    "Chokai (Morning Meetings)",
+                    "₹0 Cost",
+                    "Culture Fix",
+                    "5-minute homeroom discussion on daily goals/values instead of long assembly.",
+                    "Fixes behavioral issues proactively. Acts as evidence for 'Value-based Education' in HPC."
+                );
+            }
+
+            // MANDATORY: HPC
+            add(
+                "Digital Toban & Nichoku Logs",
+                "SaaS (₹500/mo)",
+                "Compliance",
+                "Digitize the duty logs from Han/Soji to auto-generate the 'Holistic Progress Card'.",
+                "Automates PARAKH compliance for the 'Co-scholastic' domain."
+            );
+
+            return recommendations;
+        }
+
+        function renderReport(data, recs) {
+            const date = new Date().toLocaleDateString();
+            const score = Math.min(95, 40 + (recs.length * 10)); // Dynamic score calculation
+
+            const container = document.getElementById('report-content-1');
+
+            // Use Template Literals carefully.
+            // Using standard variables inside ${ } works fine in browsers.
+
+            container.innerHTML = `
+                <div class="report-page">
+                    <div class="rp-header-row">
+                        <div class="rp-logo">Edu-Optima Report</div>
+                        <div class="rp-meta">
+                            Date: ${date}<br>
+                            School Size: ${data.students} Students
+                        </div>
+                    </div>
+
+                    <h1 class="mb-4 text-center" style="color:var(--primary)">NEP 2020 Transformation Roadmap</h1>
+                    
+                    <div class="callout">
+                        <strong>Goal:</strong> Transform into an NEP-compliant Model School using efficiency-driven Japanese methods.
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <span class="stat-val">${score}%</span>
+                            <span class="stat-label">NEP Readiness</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-val">${recs.length}</span>
+                            <span class="stat-label">Modules Identified</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-val text-accent">Ready</span>
+                            <span class="stat-label">HPC Status</span>
+                        </div>
+                    </div>
+
+                    <h3 class="mt-8 mb-4">Recommended Interventions</h3>
+                    <table class="rec-table">
+                        <thead>
+                            <tr>
+                                <th width="25%">Module</th>
+                                <th width="45%">Description & Action</th>
+                                <th width="30%">Impact & Rationale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recs.map(r => `
+                                <tr>
+                                    <td>
+                                        <div class="font-bold" style="color:var(--primary); font-size:1.1em;">${r.title}</div>
+                                        <div class="mt-4"><span class="badge-pill badge-tokkatsu">${r.cost}</span></div>
+                                    </td>
+                                    <td>
+                                        <p>${r.desc}</p>
+                                    </td>
+                                    <td>
+                                        <div class="mb-4"><strong>Why:</strong> ${r.why}</div>
+                                        <span class="badge-pill badge-nep">${r.impact}</span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="mt-8 text-center" style="border-top:1px solid var(--border); padding-top:2rem;">
+                        <p class="text-muted text-sm">Generated by Edu-Optima Seich-OS Engine. Aligned with NCERT PARAKH Guidelines.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+    </script>
+</body>
+
+</html>
